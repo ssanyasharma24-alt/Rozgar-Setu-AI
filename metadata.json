@@ -1,0 +1,10 @@
+{
+  "name": "Rozgar Setu AI",
+  "description": "Last Minute Job Saver for Indian students. Includes ATS resume scoring, AI mock interview practice, and government scheme finder.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
