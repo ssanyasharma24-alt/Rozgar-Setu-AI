@@ -7,7 +7,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const port = process.env.PORT || 8080;
 
 // Set up body parsers with limits for PDF uploads
 app.use(express.json({ limit: "25mb" }));
