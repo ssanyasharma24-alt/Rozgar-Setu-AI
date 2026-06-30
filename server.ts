@@ -47,5 +47,29 @@ async function startServer() {
     console.log(`Server listening on port ${port}`);
   });
 }
+// Route 2: Mock Interview
+app.post("/api/interview", async (req: Request, res: Response) => {
+  try {
+    const { company, role, history } = req.body;
+    
+    if (!company || !role) {
+      return res.status(400).json({ error: "Company and Role are required" });
+    }
 
+    const prompt = `You are a senior HR from ${company} taking interview for ${role}. 
+    Previous conversation: ${JSON.stringify(history)}
+    Ask exactly ONE question. Return JSON: { "question": "...", "isLastQuestion": false }`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: { responseMimeType: "application/json" }
+    });
+
+    res.json(JSON.parse(response.text));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to generate interview question" });
+  }
+});
 startServer();
