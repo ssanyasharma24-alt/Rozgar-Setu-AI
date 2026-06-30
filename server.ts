@@ -72,4 +72,29 @@ app.post("/api/interview", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to generate interview question" });
   }
 });
+// Route 3: Schemes Finder
+app.post("/api/schemes", async (req: Request, res: Response) => {
+  try {
+    const { age, homeState, educationLevel } = req.body;
+    
+    if (!age || !homeState || !educationLevel) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const prompt = `You are Rozgar Setu AI. User details: Age ${age}, State ${homeState}, Education ${educationLevel}. 
+    List 3 government schemes they are eligible for in India. Return JSON array: [{"name":"...", "description":"...", "eligibility":"...", "link":"..."}]`;
+
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+      config: { responseMimeType: "application/json" }
+    });
+
+    res.json(JSON.parse(response.text));
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch schemes" });
+  }
+});
+
 startServer();
